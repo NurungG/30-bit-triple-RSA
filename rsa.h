@@ -21,7 +21,7 @@ typedef int64_t int64;
 
 /* Funtions */
 int32 getRandomPrime();
-int32 getPublicKey(int32, int32);
+int32 getPublicKey(int32);
 int32 getPrivateKey(int32, int32);
 
 int32 getHash(int32, int32);
