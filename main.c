@@ -10,9 +10,9 @@ int main() {
 	srand((unsigned)time(NULL));
 
 	// Get random prime & print
-	p = 911;// getRandomPrime();
-	q = 977;// getRandomPrime();
-	r = 691;// getRandomPrime();
+	p = getRandomPrime();
+	q = getRandomPrime();
+	r = getRandomPrime();
 	printf("p = %d\n", p);
 	printf("q = %d\n", q);
 	printf("r = %d\n", r);
@@ -24,7 +24,7 @@ int main() {
 	printf("phi = %d\n", phi);
 
 	// Select at random the encrytion key & print
-	e = 27737;// getPublicKey(N, phi);
+	e = getPublicKey(phi);
 	d = getPrivateKey(e, phi);
 	printf("e = %d\n", e);
 	printf("d = %d\n\n", d);
