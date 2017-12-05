@@ -82,6 +82,40 @@ static int32 gcd(int32 a, int32 b) {
 	return gcd(b, a % b);
 }
 
+static int32 getMulInverse(int32 b, int32 mod) {
+	// Get multiplicative inverse (b, mod), using Extended Euclidean Algorithm
+	int32 ret, p0, p1;
+	int32 q, r;
+	int32 a;
+
+	// Init values
+	a = mod;
+	p0 = 0; p1 = 1;
+	ret = p1;
+
+	// Do Extended Euclidean Algorithm
+	while (1) {
+		// Do divide
+		q = a / b;
+		r = a % b;
+
+		// If remainder is 0, return multiplicative inverse
+		if (r == 0) {
+			return (ret > 0) ? ret : ret + mod;
+		}
+
+		// Set the Euclidean number according to the ignition formula below
+		// p[i] = p[i - 2] - p[i - 1] * q[i - 2] 
+		ret = (p0 - (p1 * q)) % mod;
+
+		// Set next round's values
+		a = b;
+		b = r;
+		p0 = p1;
+		p1 = ret;
+	}
+}
+
 
 
 /* Public Functions */
@@ -111,35 +145,7 @@ int32 getPublicKey(int32 N, int32 phi) {
 
 int32 getPrivateKey(int32 e, int32 phi) {
 	// Find decryption key (find multiplicative inverse using (e, phi) with Extended Euclidean Algorithm)
-	int32 d, p0, p1;
-	int32 q, r;
-	int32 a, b;
-
-	// Init values
-	a = phi; b = e;
-	p0 = 0; p1 = 1;
-
-	// Do Extended Euclidean Algorithm
-	while (1) {
-		// Do divide
-		q = a / b;
-		r = a % b;
-
-		// If remainder is 0, return multiplicative inverse
-		if (r == 0) {
-			return (d > 0) ? d : d + phi;
-		}
-
-		// Set the Euclidean number according to the ignition formula below
-		// p[i] = p[i - 2] - p[i - 1] * q[i - 2] 
-		d = (p0 - (p1 * q)) % phi;
-
-		// Set next round's values
-		a = b;
-		b = r;
-		p0 = p1;
-		p1 = d;
-	}
+	return getMulInverse(e, phi);
 }
 
 int32 getHash(int32 msg, int32 N) {
